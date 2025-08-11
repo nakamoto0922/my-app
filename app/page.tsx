@@ -27,6 +27,7 @@ export default function Home() {
         </ol>
         <Link href={"/aws"}>aws</Link>
         <a href="/aws">a tag</a>
+        <div>test push</div>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
