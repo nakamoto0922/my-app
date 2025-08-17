@@ -1,6 +1,5 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
+
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState } from "react";
@@ -14,12 +13,10 @@ export default function Home() {
   const [subSwiper2, setSubSwiper2] = useState<SwiperType | null>(null);
   const [subSwiper3, setSubSwiper3] = useState<SwiperType | null>(null);
 
-  const handlePrev = () => {
-    mainSwiper?.slidePrev();
-  };
+  const images: string[] = ["/file.svg", "/globe.svg", "/next.svg", "/window.svg"];
 
-  const handleNext = () => {
-    mainSwiper?.slideNext();
+  const handleSlideTo = (index: number) => {
+    mainSwiper?.slideToLoop(index);
   };
 
   return (
@@ -45,8 +42,15 @@ export default function Home() {
           ))}
         </Swiper>
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex gap-4">
-          <button onClick={handlePrev} className="bg-white text-black px-4 py-2 rounded">Prev</button>
-          <button onClick={handleNext} className="bg-white text-black px-4 py-2 rounded">Next</button>
+          {images.map((image, index) => (
+            <button
+              key={image}
+              onClick={() => handleSlideTo(index)}
+              className="w-12 h-12 rounded-full overflow-hidden"
+            >
+              slide {index + 1}
+            </button>
+          ))}
         </div>
       </div>
       <div className="absolute top-0 right-0 w-72 h-72">
