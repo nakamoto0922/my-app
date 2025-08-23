@@ -3,7 +3,8 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState, useEffect } from "react";
 import type { Swiper as SwiperType } from "swiper";
-import { Autoplay, Controller } from "swiper/modules";
+import { Autoplay, Controller, EffectFade } from "swiper/modules";
+import "swiper/css/effect-fade";
 
 export default function Home() {
   const data: string[] = ["Slide 1", "Slide 2", "Slide 3", "Slide 4"];
@@ -13,11 +14,7 @@ export default function Home() {
   const images: string[] = ["/file.svg", "/globe.svg", "/next.svg", "/window.svg"];
 
   // サブスワイパーの配置設定
-  const subSwiperPositions = [
-    { className: "absolute top-0 right-0 w-72 h-72" },
-    { className: "absolute top-1/2 right-0 transform -translate-y-1/2 w-72 h-72" },
-    { className: "absolute bottom-0 right-0 w-72 h-72" }
-  ];
+  
 
   const handleSlideTo = (index: number) => {
     mainSwiper?.slideToLoop(index);
@@ -39,13 +36,14 @@ export default function Home() {
   return (
     <div className="relative w-screen h-screen">
       {/* メインスワイパー */}
-      <div className="absolute top-0 left-0 w-[calc(100%-18rem)] h-screen">
+      <div className="absolute top-0 left-0 w-full lg:w-[calc(100%-18rem)] h-screen">
         <Swiper
           onSwiper={setMainSwiper}
           spaceBetween={50}
           slidesPerView={1}
           loop
-          modules={[Autoplay, Controller]}
+          effect={"fade"}
+          modules={[Autoplay, Controller, EffectFade]}
           controller={{ control: subSwipers.filter(Boolean) as SwiperType[] }}
           autoplay={{
             delay: 2500,
@@ -77,25 +75,62 @@ export default function Home() {
       </div>
 
       {/* サブスワイパー（ループで生成） */}
-      {subSwiperPositions.map((position, index) => (
-        <div key={index} className={position.className}>
-          <Swiper
-            onSwiper={handleSubSwiperSet(index)}
-            spaceBetween={50}
-            slidesPerView={1}
-            loop
-            modules={[Controller]}
-          >
-            {getOffsetData(index).map((d, slideIndex) => (
-              <SwiperSlide key={slideIndex}>
-                <div className="bg-gray-400 h-full flex items-center justify-center text-sm font-medium">
-                  {d}
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      ))}
+      <div className="absolute top-0 right-0 w-72 h-72 hidden lg:block">
+        <Swiper
+          onSwiper={handleSubSwiperSet(0)}
+          spaceBetween={50}
+          slidesPerView={1}
+          loop
+          effect={"fade"}
+          modules={[Controller, EffectFade]}
+        >
+          {getOffsetData(0).map((d, slideIndex) => (
+            <SwiperSlide key={slideIndex}>
+              <div className="bg-gray-400 h-full flex items-center justify-center text-sm font-medium">
+                {d}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      <div className="absolute top-1/2 right-0 transform -translate-y-1/2 w-72 h-72 hidden lg:block">
+        <Swiper
+          onSwiper={handleSubSwiperSet(1)}
+          spaceBetween={50}
+          slidesPerView={1}
+          loop
+          effect={"fade"}
+          modules={[Controller, EffectFade]}
+        >
+          {getOffsetData(1).map((d, slideIndex) => (
+            <SwiperSlide key={slideIndex}>
+              <div className="bg-gray-400 h-full flex items-center justify-center text-sm font-medium">
+                {d}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      <div className="absolute bottom-0 right-0 w-72 h-72 hidden lg:block">
+        <Swiper
+          onSwiper={handleSubSwiperSet(2)}
+          spaceBetween={50}
+          slidesPerView={1}
+          loop
+          effect={"fade"}
+          modules={[Controller, EffectFade]}
+        >
+          {getOffsetData(2).map((d, slideIndex) => (
+            <SwiperSlide key={slideIndex}>
+              <div className="bg-gray-400 h-full flex items-center justify-center text-sm font-medium">
+                {d}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </div>
   );
 }
